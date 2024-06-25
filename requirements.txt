@@ -1,0 +1,7 @@
+anthropic
+openai
+python-dotenv
+colorama
+pygments
+tavily-python
+setuptools
