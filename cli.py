@@ -37,22 +37,30 @@ class CLI:
             return None
 
     def save_state(self):
+        """Save the current project state"""
         self.project_state.save()
         print_colored("Project state saved.", RESULT_COLOR)
 
     def load_state(self):
+        """Load a previously saved project state"""
         self.project_state.load()
         print_colored("Project state loaded.", RESULT_COLOR)
 
     def switch_model(self):
+        """Switch between AI models (not fully implemented)"""
         # Implement model switching logic
         pass
 
     def show_help(self):
-        help_text = "\n".join([f"{cmd}: {func.__doc__}" for cmd, func in self.commands.items()])
+        """Show this help message"""
+        help_text = "Available commands:\n"
+        for cmd, func in self.commands.items():
+            help_text += f"{cmd}: {func.__doc__}\n"
+        help_text += "\nFor general coding assistance, simply type your question or request."
         print_colored(help_text, RESULT_COLOR)
 
     def execute_code(self):
+        """Execute a Python code snippet"""
         code = input("Enter Python code to execute: ")
         output, error = safe_execute_code(code)
         if output:
@@ -61,6 +69,7 @@ class CLI:
             print_colored(f"Error:\n{error}", TOOL_COLOR)
 
     def update_requirements(self):
+        """Update requirements.txt based on imports in a file"""
         file_path = input("Enter the path of the Python file to analyze: ")
         with open(file_path, 'r') as file:
             content = file.read()
@@ -68,16 +77,19 @@ class CLI:
         print_colored(result, RESULT_COLOR)
 
     def install_packages(self):
+        """Install packages from requirements.txt"""
         result = install_packages()
         print_colored(result, RESULT_COLOR)
 
     def analyze_context(self):
+        """Get context-aware suggestions for a file"""
         current_file = input("Enter the path of the current file: ")
         suggestions = get_context_suggestions(self.project_state.file_structure, current_file)
         for suggestion in suggestions:
             print_colored(suggestion, RESULT_COLOR)
 
     def generate_docs(self):
+        """Generate basic documentation for the project"""
         docs = generate_project_docs()
         print_colored(docs, RESULT_COLOR)
         with open("project_documentation.md", "w") as f:
@@ -85,6 +97,7 @@ class CLI:
         print_colored("Documentation saved to project_documentation.md", RESULT_COLOR)
 
     def run(self):
+        print("Debug: CLI run method started")
         while True:
             user_input = input(f"\n{USER_COLOR}You: {Style.RESET_ALL}")
             if user_input.lower() == 'exit':
@@ -98,6 +111,8 @@ class CLI:
                 else:
                     print_colored(f"Unknown command: {command}. Type /help for a list of commands.", RESULT_COLOR)
             else:
+                print("Debug - System Prompt:", self.system_prompt[:100] + "...")  # Print first 100 chars
+                print("Debug - Tools:", self.tools)
                 response = self.ai_interface.chat(user_input, self.project_state.conversation_history, self.system_prompt, self.tools)
                 print_colored(f"\nAI: {response}", CLAUDE_COLOR)
                 self.project_state.add_to_history({"role": "user", "content": user_input})

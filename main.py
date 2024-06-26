@@ -20,7 +20,7 @@ def main():
                         help="Choose the AI model (default: claude)")
     args = parser.parse_args()
 
-    system_prompt = system_prompt = """
+    system_prompt = """
 You are Claude, an AI assistant powered by Anthropic's Claude-3-opus-20240229 model. You are an exceptional software developer with vast knowledge across multiple programming languages, frameworks, and best practices. Your primary task is to create project structures and generate code for websites and web applications. Your capabilities include:
 
 1. Creating project structures, including folders and files
@@ -65,77 +65,70 @@ Always strive to create a functional and well-structured project.
     tools = [
         {
             "type": "function",
-            "function": {
-                "name": "create_folder",
-                "description": "Create a new folder at the specified path",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "path": {
-                            "type": "string",
-                            "description": "The path where the folder should be created"
-                        }
-                    },
-                    "required": ["path"]
-                }
-            }
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "create_file",
-                "description": "Create a new file at the specified path with optional content",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "path": {
-                            "type": "string",
-                            "description": "The path where the file should be created"
-                        },
-                        "content": {
-                            "type": "string",
-                            "description": "The initial content of the file (optional)"
-                        }
-                    },
-                    "required": ["path"]
-                }
-            }
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "write_to_file",
-                "description": "Write content to an existing file at the specified path",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "path": {
-                            "type": "string",
-                            "description": "The path of the file to write to"
-                        },
-                        "content": {
-                            "type": "string",
-                            "description": "The content to write to the file"
-                        }
-                    },
-                    "required": ["path", "content"]
-                }
-            }
-        },
-        {
-            "type": "function",
-            "function": {
-                "name": "list_files",
-                "description": "List all files and directories in the specified path",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "path": {
-                            "type": "string",
-                            "description": "The path of the folder to list (default: current directory)"
-                        }
+            "name": "create_folder",
+            "description": "Create a new folder at the specified path",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "The path where the folder should be created"
                     }
-                }
+                },
+                "required": ["path"]
+            }
+        },
+        {
+            "type": "function",
+            "name": "create_file",
+            "description": "Create a new file at the specified path with optional content",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "The path where the file should be created"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "The initial content of the file (optional)"
+                    }
+                },
+                "required": ["path"]
+            }
+        },
+        {
+            "type": "function",
+            "name": "write_to_file",
+            "description": "Write content to an existing file at the specified path",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "The path of the file to write to"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "The content to write to the file"
+                    }
+                },
+                "required": ["path", "content"]
+            }
+        },
+        {
+            "type": "function",
+            "name": "list_files",
+            "description": "List all files and directories in the specified path",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "The path of the folder to list (default: current directory)"
+                    }
+                },
+                "required": []
             }
         }
     ]
